@@ -33,7 +33,7 @@ public class lista_de_años {
 	//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 
-	String query3 = "SELECT AÑO FROM AÑO WHERE AÑO > 2010"; 
+	String query3 = "SELECT AÑO FROM AÑO"; 
 	ResultSet rs3 = s.executeQuery (query3);
 	//System.out.println (query3); 
 	int i = 0;

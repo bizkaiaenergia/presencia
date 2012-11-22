@@ -13,7 +13,7 @@ public class quien_eres {
 	public static  String tu_nombre( String args[] ) {
 		String userName = System.getProperty("user.name");
 		//userName = "Oscar Jauregui";
-		//	userName = "Agustin Prellezo";
+		//	userName = "Agustin Prellezo555";
 		//System.out.println("Window's Username: "+userName);
 		return userName;
 		}

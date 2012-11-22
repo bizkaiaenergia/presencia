@@ -205,6 +205,7 @@ public class horas_a_compensar_solo_parada {
 
 	
 		
+		
 }
 	
 	
@@ -278,6 +279,18 @@ public class horas_a_compensar_solo_parada {
 		//	System.out.println (Horas + "disfrutadas solo parada año " + año); 
 			
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

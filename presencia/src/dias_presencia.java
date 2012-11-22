@@ -2,24 +2,20 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-
-import javax.swing.table.DefaultTableModel;
 
 	
 
 
 public class dias_presencia {
-	public static DefaultTableModel  listado_dias_presencia(String empleado,String año){
-		
+	public static Object[][]  listado_dias_presencia(String empleado,String año){
+		String listado = null;
 		String ID_EMPLEADO = "";
-		DefaultTableModel modelo = null; 
-	
+		Object[][] data = null;
 	try {	
-		
+	
 	propiedades Archivopropiedades = new propiedades();
 	String servidor_sql = Archivopropiedades.servidor_SQL();
 	String basededatos = Archivopropiedades.base_de_datos();
@@ -48,54 +44,12 @@ public class dias_presencia {
 	
 	
 	
-	//String query3 = "SELECT Fecha, horas_trabajadas, CHE, Vacaciones, HCSindical, HTSindical, ILT, BMedicas, PyL  FROM Datos_Jornada_día  WHERE (ID_empleado = '"+ID_EMPLEADO+"' and Fecha >= {D '"+fecha_inicio_año+"'}  And Fecha <= {D '"+fecha_fin_año+"'} ) ORDER BY Fecha"; 
-	String query3 = "SELECT Fecha, HCSindical, HTSindical, ILT, BMedicas, PyL, Absentismo  FROM absentismo  WHERE (ID_empleado = '"+ID_EMPLEADO+"' and Fecha >= {D '"+fecha_inicio_año+"'}  And Fecha <= {D '"+fecha_fin_año+"'} ) ORDER BY Fecha";
+	String query3 = "SELECT Fecha, horas_trabajadas, CHE, Vacaciones, HCSindical, HTSindical, ILT, BMedicas, PyL  FROM Datos_Jornada_día  WHERE (ID_empleado = '"+ID_EMPLEADO+"' and Fecha >= {D '"+fecha_inicio_año+"'}  And Fecha <= {D '"+fecha_fin_año+"'} ) ORDER BY Fecha"; 
+	
 	
 	
 	//System.out.println (query3); 
 	ResultSet rs3 = s.executeQuery (query3);
-	
-	
-	
-	 modelo = new DefaultTableModel();
-	
-	ResultSetMetaData metaDatos = rs3.getMetaData();
-	
-	// Se obtiene el número de columnas.
-	int numeroColumnas = metaDatos.getColumnCount();
-
-	
-	// Se crea un array de etiquetas para rellenar
-	Object[] etiquetas = new Object[numeroColumnas];
-	
-	// Se obtiene cada una de las etiquetas para cada columna
-	for (int i = 0; i < numeroColumnas; i++)
-	{
-	   // Nuevamente, para ResultSetMetaData la primera columna es la 1.
-	   etiquetas[i] = metaDatos.getColumnLabel(i + 1);
-	}
-	
-	
-	modelo.setColumnIdentifiers(etiquetas);
-	
-	
-	while (rs3.next())
-	{
-	   // Se crea un array que será una de las filas de la tabla.
-	   Object [] fila = new Object[numeroColumnas]; // Hay tres columnas en la tabla
-
-	   // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-	   for (int i=0;i<numeroColumnas;i++)
-	      fila[i] = rs3.getObject(i+1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-
-	   // Se añade al modelo la fila completa.
-	   modelo.addRow(fila);
-	}
-	
-	
-	
-	
-	/*
 	
 	int i = 0;
 	while ( rs3.next() )
@@ -128,7 +82,7 @@ public class dias_presencia {
 		//System.out.println (Horas); 
 
 	}
-	*/
+		
 	}catch (ClassNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -146,7 +100,7 @@ public class dias_presencia {
 	
 	
 	
-	return modelo;
+	return data;
 	
 	
 	

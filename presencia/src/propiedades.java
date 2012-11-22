@@ -15,7 +15,7 @@ public class propiedades {
 	String ruta_instalacion;
 	String servidor_SQL;
 	String base_de_datos;
-	String absentismo;
+	
 	
 	
 	Properties prop  = new Properties();
@@ -67,14 +67,7 @@ public class propiedades {
 		return servidor_SQL;
 		}
 	
-	String absentismo(){
-		try{
-			prop.load(new FileInputStream(archivo_properties));
-			absentismo = prop.getProperty("absentismo");
-		}catch(IOException e){
-		}
-		return absentismo;
-		}
+	
 	
 	
 	

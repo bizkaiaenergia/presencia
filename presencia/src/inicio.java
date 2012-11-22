@@ -39,9 +39,8 @@ public class inicio extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
-	public String usuario; 
+	private String usuario; 
 	private JTextField textField_2;
-	public String puedes_ver_todo_string;
 
 	/**
 	 * Launch the application.
@@ -232,13 +231,4 @@ public class inicio extends JFrame {
 		
 		
 	}
-
-
-
-public static String puedes_ver_todo (){
-	String  usuario = quien_eres.tu_nombre(null);
-	 String puedes_ver_todo_string = quien_eres.jefe_dpto(usuario);
-	
-return puedes_ver_todo_string;
-}
 }

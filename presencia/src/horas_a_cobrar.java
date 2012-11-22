@@ -12,18 +12,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.table.DefaultTableModel;
-
 
 public class horas_a_cobrar {
 	
+	public static String[] listado ;
+	public static String[] totales ;
 	
-	
-	public static DefaultTableModel listado_horas_cobrar(String empleado,String año){
-		DefaultTableModel modelo = null; 
-	
+	public static Object[][]  listado_horas_cobrar(String empleado,String año){
+		listado = null;
 		String ID_EMPLEADO = "";
-		
+		Object[][] data = null;
 	try {	
 	
 	propiedades Archivopropiedades = new propiedades();
@@ -52,59 +50,65 @@ public class horas_a_cobrar {
 	//System.out.println (query1); 
 	while (rs.next()) 
 	{ 
-		
+		//System.out.println (rs.getInt (1) + " " + rs.getString (2)+ " " + rs.getDate(3)); 
+		//String ID_EMPLEADO = rs.getString(1)+ " " + rs.getString (2)+" " + rs.getString (3)+ " " + rs.getString (4);
 		 ID_EMPLEADO = rs.getString(1);
-	
+		//System.out.println (ID_EMPLEADO); 
 
 	}
+	/*
+	String query3 = "SELECT Id_hora_extra, Id_empleado,Fecha, 'Mes Contabilizado', Inicio_hora_extra as INICIO, Fin_hora_extra as FIN," +
+	"Horas_extras_trab as TRAB, Horas_extras_base as H_BASE, Coeficiente_ajuste as COEF ,horas_ordinarias_ajustadas as H_ORD_AJ," +
+	"horas_ordinarias_cobrar as HORAS_A_COBRAR FROM Datos_horas_extras  WHERE (HORAS_A_COBRAR <> 0 AND Fecha >= {D '"+fecha_inicio_año+"'} AND  `Fecha` <= {D '"+fecha_fin_año +"'} AND ID_empleado = '"+ID_EMPLEADO+"')"; 
+	*/
+	///BUENO
+	//String query3 = "SELECT Id_hora_extra, Id_empleado,Fecha, [Mes Contabilizado], Inicio_hora_extra , Fin_hora_extra ," +
+	//		"Horas_extras_trab , Horas_extras_base , Coeficiente_ajuste ,horas_ordinarias_ajustadas," +
+	//		"horas_ordinarias_cobrar,horas_efectivas_a_cobrar  FROM Datos_horas_extras  WHERE (horas_ordinarias_cobrar <> 0  and ID_empleado = '"+ID_EMPLEADO+"') ORDER BY Fecha"; 
+	//BUENO
+	
 	
 	
 	String query3 = "SELECT Id_hora_extra, Id_empleado,Fecha, [Mes Contabilizado], Inicio_hora_extra , Fin_hora_extra ," +
 		"Horas_extras_trab , Horas_extras_base , Coeficiente_ajuste ,horas_ordinarias_ajustadas," +
 			"horas_ordinarias_cobrar,horas_efectivas_a_cobrar  FROM Datos_horas_extras  WHERE (horas_ordinarias_cobrar <> 0  and ID_empleado = '"+ID_EMPLEADO+"' and Fecha >= {D '"+fecha_inicio_año+"'}  And Fecha <= {D '"+fecha_fin_año+"'} ) ORDER BY Fecha"; 
 	
+	
+	
+	//System.out.println (query3); 
 	ResultSet rs3 = s.executeQuery (query3);
 	
+	int i = 0;
+	while ( rs3.next() )
+	i++;
+	ResultSet rs4 = s.executeQuery (query3); 
+	data = new Object[i][11];
+	while (rs4.next()) 
+	{ 
+		Integer largo_tabla = rs4.getRow();
+		
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(2);
+		df.setMaximumFractionDigits(2);
+		
+		
+		String Horas = (rs4.getString(1)+";" + rs4.getDate(3) +";" + rs4.getString(4)+";" + rs4.getTime(5)+";" + rs4.getTime(6)+";" + df.format(rs4.getFloat(7))+";" + df.format(rs4.getFloat(8))+";" + df.format(rs4.getFloat(9))+";" + df.format(rs4.getFloat(10))+";" + df.format(rs4.getFloat(11))+";" + df.format(rs4.getFloat(12)));
+		String[] vacaciones=Horas.split(";");
+		data[largo_tabla-1][0]= vacaciones[0];
+		data[largo_tabla-1][1]= vacaciones[1];
+		data[largo_tabla-1][2]= vacaciones[2];
+		data[largo_tabla-1][3]= vacaciones[3];
+		data[largo_tabla-1][4]= vacaciones[4];
+		data[largo_tabla-1][5]= vacaciones[5];
+		data[largo_tabla-1][6]= vacaciones[6];
+		data[largo_tabla-1][7]= vacaciones[7];
+		data[largo_tabla-1][8]= vacaciones[8];
+		data[largo_tabla-1][9]= vacaciones[9];
+		data[largo_tabla-1][10]= vacaciones[10];
+		
+		//System.out.println (Horas); 
 
-	
-	 modelo = new DefaultTableModel();
-	
-	ResultSetMetaData metaDatos = rs3.getMetaData();
-	
-	// Se obtiene el número de columnas.
-	int numeroColumnas = metaDatos.getColumnCount();
-
-	
-	// Se crea un array de etiquetas para rellenar
-	Object[] etiquetas = new Object[numeroColumnas];
-	
-	// Se obtiene cada una de las etiquetas para cada columna
-	for (int i = 0; i < numeroColumnas; i++)
-	{
-	   // Nuevamente, para ResultSetMetaData la primera columna es la 1.
-	   etiquetas[i] = metaDatos.getColumnLabel(i + 1);
 	}
-	
-	
-	modelo.setColumnIdentifiers(etiquetas);
-	
-	
-	while (rs3.next())
-	{
-	   // Se crea un array que será una de las filas de la tabla.
-	   Object [] fila = new Object[numeroColumnas]; // Hay tres columnas en la tabla
-
-	   // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-	   for (int i=0;i<numeroColumnas;i++)
-	      fila[i] = rs3.getObject(i+1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-
-	   // Se añade al modelo la fila completa.
-	   modelo.addRow(fila);
-	}
-	
-	
-
-	
 		
 	}catch (ClassNotFoundException e) {
 		// TODO Auto-generated catch block
@@ -123,7 +127,7 @@ public class horas_a_cobrar {
 	
 	
 	
-	return modelo;
+	return data;
 	
 	
 	
